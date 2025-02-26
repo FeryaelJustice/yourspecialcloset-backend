@@ -55,9 +55,13 @@ router.get("/:id", async (req, res) => {
         );
         const [category] = await db.execute("SELECT name, name_en FROM product_category WHERE id = ?", [product[0][0].category_id]);
         const [sizes] = await db.execute("SELECT id, product_id, size, quantity FROM product_sizes WHERE product_id = ?", [product[0][0].id]);
+
+        // Filtrar los tamaños con quantity > 0
+        const filteredSizes = sizes.filter(size => size.quantity > 0);
+
         product[0][0].media = media;
         product[0][0].category = category[0];
-        product[0][0].sizes = sizes;
+        product[0][0].sizes = filteredSizes;
 
         res.json(product[0][0]);
     } catch (err) {
