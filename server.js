@@ -7,7 +7,11 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ["OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(morgan("dev"));
 
 // Servir archivos estáticos
